@@ -1,4 +1,5 @@
-import { Routes, Route, lazy, Suspense } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import Layout from './layouts/Layout'
 import { LoadingSpinner } from './components/LoadingSpinner'
 
