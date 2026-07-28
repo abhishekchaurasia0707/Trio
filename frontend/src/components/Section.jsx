@@ -27,7 +27,7 @@ export const SectionHeader = ({ title, subtitle, centered = true, dark = false }
           {subtitle}
         </p>
       )}
-      <div className={`w-20 h-1 bg-accent-gold mt-6 ${centered ? 'mx-auto' : ''}`} />
+      <div className={`w-20 h-1 bg-accent mt-6 ${centered ? 'mx-auto' : ''}`} />
     </motion.div>
   )
 }

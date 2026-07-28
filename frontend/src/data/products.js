@@ -397,27 +397,62 @@ export const testimonials = [
   {
     name: 'Rajesh Kumar',
     company: 'TechCorp India',
-    quote: 'Trio Power Technologies has been our trusted partner for 5 years. Their server racks are exceptional in quality and durability. Highly recommended!'
+    role: 'CTO',
+    avatar: 'RK',
+    rating: 5,
+    quote: 'Trio Power Technologies has been our trusted partner for 5 years. Their server racks are exceptional in quality and durability. The team\'s attention to detail and commitment to excellence is remarkable. Highly recommended for any enterprise IT infrastructure needs.',
+    project: 'Data Center Expansion - 500+ Racks',
+    location: 'Mumbai, Maharashtra'
   },
   {
     name: 'Priya Sharma',
     company: 'DataCenter Solutions',
-    quote: 'The custom rack solutions provided by Trio exceeded our expectations. Professional team, excellent support, and premium quality products.'
+    role: 'Infrastructure Manager',
+    avatar: 'PS',
+    rating: 5,
+    quote: 'The custom rack solutions provided by Trio exceeded our expectations. Professional team, excellent support, and premium quality products. They delivered on time and within budget, which is rare in this industry.',
+    project: 'Custom Rack Design - 200 Units',
+    location: 'Bangalore, Karnataka'
   },
   {
     name: 'Amit Patel',
     company: 'Network Systems Ltd',
-    quote: 'Outstanding product quality and customer service. Their PDUs and cable management solutions have significantly improved our infrastructure.'
+    role: 'Network Director',
+    avatar: 'AP',
+    rating: 5,
+    quote: 'Outstanding product quality and customer service. Their PDUs and cable management solutions have significantly improved our infrastructure. The technical support team is always responsive and knowledgeable.',
+    project: 'Network Cabinet Upgrade - 150 Units',
+    location: 'Delhi NCR'
   },
   {
     name: 'Sneha Reddy',
     company: 'Enterprise IT Services',
-    quote: 'We\'ve been using Trio Power products across all our data centers. The reliability and performance are unmatched in the industry.'
+    role: 'Operations Head',
+    avatar: 'SR',
+    rating: 5,
+    quote: 'We\'ve been using Trio Power products across all our data centers. The reliability and performance are unmatched in the industry. Their products have reduced our maintenance costs by 40%.',
+    project: 'Multi-Location Deployment - 1000+ Units',
+    location: 'Hyderabad, Telangana'
   },
   {
     name: 'Vikram Singh',
     company: 'Cloud Infrastructure Pvt Ltd',
-    quote: 'Best-in-class products at competitive prices. The team at Trio Power Technologies truly understands enterprise requirements.'
+    role: 'CEO',
+    avatar: 'VS',
+    rating: 5,
+    quote: 'Best-in-class products at competitive prices. The team at Trio Power Technologies truly understands enterprise requirements. Their ISO certification and quality standards give us complete confidence.',
+    project: 'Cloud Data Center - 300 Racks',
+    location: 'Pune, Maharashtra'
+  },
+  {
+    name: 'Anjali Mehta',
+    company: 'Telecom Giants India',
+    role: 'Technical Lead',
+    avatar: 'AM',
+    rating: 5,
+    quote: 'Exceptional build quality and innovative designs. Trio Power\'s solutions have helped us optimize our telecom infrastructure significantly. Their after-sales support is exemplary.',
+    project: 'Telecom Rack Deployment - 400 Units',
+    location: 'Chennai, Tamil Nadu'
   }
 ]
 

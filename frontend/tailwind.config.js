@@ -8,21 +8,21 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1E40AF',
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-          800: '#1E40AF',
-          900: '#1E3A8A',
-          950: '#172554',
+          DEFAULT: '#334155', // Professional slate
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
         },
         secondary: {
-          DEFAULT: '#0F766E',
+          DEFAULT: '#0F766E', // Professional teal
           50: '#F0FDFA',
           100: '#CCFBF1',
           200: '#99F6E4',
@@ -36,7 +36,7 @@ export default {
           950: '#042F2E',
         },
         accent: {
-          DEFAULT: '#F59E0B',
+          DEFAULT: '#F59E0B', // Professional amber
           50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
@@ -50,7 +50,7 @@ export default {
           950: '#451A03',
         },
         danger: {
-          DEFAULT: '#DC2626',
+          DEFAULT: '#DC2626', // Professional red
           50: '#FEF2F2',
           100: '#FEE2E2',
           200: '#FECACA',
@@ -85,4 +85,3 @@ export default {
   },
   plugins: [],
 }
-

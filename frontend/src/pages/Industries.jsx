@@ -14,17 +14,17 @@ const Industries = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-20 md:py-32">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6">
-              Industries We <span className="text-accent-gold">Serve</span>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+              Industries We <span className="text-accent">Serve</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Trusted by diverse sectors across India for their IT infrastructure needs
             </p>
           </motion.div>
@@ -100,7 +100,7 @@ const Industries = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               Let us help you find the perfect infrastructure solution for your industry.
             </p>
-            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent-gold hover:text-white transition-all duration-300">
+            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent hover:text-white transition-all duration-300">
               Get in Touch
             </Link>
           </motion.div>

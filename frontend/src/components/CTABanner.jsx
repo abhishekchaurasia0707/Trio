@@ -22,7 +22,7 @@ const CTABanner = ({ title, subtitle, buttonText, buttonLink, dark = false }) =>
           )}
           <Link
             to={buttonLink}
-            className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent-gold hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
+            className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
           >
             {buttonText}
             <ArrowRight size={20} className="ml-2" />

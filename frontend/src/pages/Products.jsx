@@ -83,7 +83,7 @@ const Products = () => {
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-24 h-24 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-24 h-24 bg-slate-700/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <span className="text-5xl">📦</span>
                 </div>
               </div>
@@ -96,7 +96,7 @@ const Products = () => {
             </div>
             {/* Quick Actions */}
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col space-y-2">
-              <button className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+              <button className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-700 hover:text-white transition-colors">
                 <ArrowRight size={18} />
               </button>
             </div>
@@ -196,7 +196,7 @@ const Products = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -210,25 +210,25 @@ const Products = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6">
-              Our <span className="text-accent-gold">Products</span>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+              Our <span className="text-accent">Products</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
               Comprehensive range of IT infrastructure solutions for every need
             </p>
             
             {/* Stats */}
             <div className="flex justify-center gap-8 md:gap-16">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent-gold">{products.length}+</div>
+                <div className="text-3xl md:text-4xl font-bold text-accent">{products.length}+</div>
                 <div className="text-gray-400 text-sm">Products</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent-gold">{categories.length - 1}</div>
+                <div className="text-3xl md:text-4xl font-bold text-accent">{categories.length - 1}</div>
                 <div className="text-gray-400 text-sm">Categories</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent-gold">100%</div>
+                <div className="text-3xl md:text-4xl font-bold text-accent">100%</div>
                 <div className="text-gray-400 text-sm">Quality</div>
               </div>
             </div>
@@ -280,7 +280,7 @@ const Products = () => {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center space-x-2 ${
                     selectedCategory === category.id
-                      ? 'bg-primary text-white shadow-md'
+                      ? 'bg-slate-700 text-white shadow-md'
                       : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-200'
                   }`}
                 >
@@ -307,14 +307,14 @@ const Products = () => {
               <div className="flex border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-slate-700 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
                   aria-label="Grid view"
                 >
                   <Grid size={20} />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-slate-700 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
                   aria-label="List view"
                 >
                   <List size={20} />
@@ -336,7 +336,7 @@ const Products = () => {
                 setSearchQuery('')
                 setSearchParams({})
               }}
-              className="text-primary hover:text-accent-gold transition-colors text-sm font-medium flex items-center"
+              className="text-primary hover:text-accent transition-colors text-sm font-medium flex items-center"
             >
               <X size={16} className="mr-1" /> Clear filters
             </button>
@@ -391,7 +391,7 @@ const Products = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               We can design and manufacture custom racks to meet your specific requirements.
             </p>
-            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent-gold hover:text-white transition-all duration-300">
+            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent hover:text-white transition-all duration-300">
               Request Custom Quote
             </Link>
           </motion.div>

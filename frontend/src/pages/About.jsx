@@ -62,7 +62,7 @@ const About = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -76,10 +76,10 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6">
-              About <span className="text-accent-gold">Trio Power</span>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+              About <span className="text-accent">Trio Power</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
               Powering India's IT Infrastructure Since 2009
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -139,7 +139,7 @@ const About = () => {
             
             {/* Location Info */}
             <div className="flex items-start space-x-3 bg-gray-800/50 rounded-xl p-4 mt-6">
-              <MapPin className="text-accent-gold mt-1 flex-shrink-0" size={20} />
+              <MapPin className="text-accent mt-1 flex-shrink-0" size={20} />
               <div>
                 <h4 className="font-semibold text-white mb-1">Headquarters</h4>
                 <p className="text-gray-400 text-sm">Pune, Maharashtra, India</p>
@@ -161,7 +161,7 @@ const About = () => {
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute top-4 right-4 bg-accent-gold text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+                className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
               >
                 ISO 9001:2015
               </motion.div>
@@ -213,10 +213,10 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700 hover:border-accent-gold transition-colors"
+              className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700 hover:border-accent transition-colors"
             >
-              <div className="w-16 h-16 bg-accent-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <cert.icon size={32} className="text-accent-gold" />
+              <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <cert.icon size={32} className="text-accent" />
               </div>
               <h3 className="font-heading font-semibold text-xl text-white mb-2">{cert.name}</h3>
               <p className="text-gray-400 text-sm">{cert.description}</p>
@@ -230,7 +230,7 @@ const About = () => {
         <SectionHeader title="Our Journey" subtitle="Key milestones in our growth" />
         <div className="relative">
           {/* Timeline Line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent-gold to-primary transform -translate-x-1/2" />
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent to-primary transform -translate-x-1/2" />
           
           <div className="space-y-8">
             {milestones.map((milestone, index) => (
@@ -245,8 +245,8 @@ const About = () => {
                 <div className={`flex-1 ${index % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
                   <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
                     <div className="flex items-center gap-3 mb-3 md:justify-end">
-                      <milestone.icon size={20} className="text-accent-gold" />
-                      <span className="text-accent-gold font-bold text-2xl">{milestone.year}</span>
+                      <milestone.icon size={20} className="text-accent" />
+                      <span className="text-accent font-bold text-2xl">{milestone.year}</span>
                     </div>
                     <h3 className="font-heading font-semibold text-lg text-gray-900 mb-2">{milestone.title}</h3>
                     <p className="text-gray-600 text-sm">{milestone.description}</p>
@@ -273,7 +273,7 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700 hover:border-accent-gold transition-colors group"
+              className="bg-gray-800 rounded-xl p-6 text-center border border-gray-700 hover:border-accent transition-colors group"
             >
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <dept.icon size={32} className="text-white" />
@@ -328,7 +328,7 @@ const About = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               Let's discuss how Trio Power Technologies can help with your IT infrastructure needs.
             </p>
-            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent-gold hover:text-white transition-all duration-300">
+            <Link to="/contact" className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-accent hover:text-white transition-all duration-300">
               Get in Touch <ArrowRight size={20} className="ml-2" />
             </Link>
           </motion.div>

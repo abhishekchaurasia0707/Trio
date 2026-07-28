@@ -149,7 +149,7 @@ const ProductDetails = () => {
       </Helmet>
 
       {/* Breadcrumb */}
-      <section className="bg-gray-50 py-4">
+      <section className="bg-gray-50 pt-24 pb-4">
         <div className="container-custom">
           <div className="flex items-center space-x-2 text-sm">
             <Link to="/" className="text-gray-500 hover:text-primary">Home</Link>

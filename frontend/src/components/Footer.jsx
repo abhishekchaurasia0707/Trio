@@ -79,7 +79,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className="text-gray-400 hover:text-accent-gold transition-colors duration-200 flex items-center group"
+                      className="text-gray-400 hover:text-accent transition-colors duration-200 flex items-center group"
                     >
                       <ArrowRight size={16} className="mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {link.name}
@@ -102,7 +102,7 @@ const Footer = () => {
                   <li key={product.name}>
                     <Link
                       to={product.path}
-                      className="text-gray-400 hover:text-accent-gold transition-colors duration-200 flex items-center group"
+                      className="text-gray-400 hover:text-accent transition-colors duration-200 flex items-center group"
                     >
                       <ArrowRight size={16} className="mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {product.name}
@@ -122,20 +122,20 @@ const Footer = () => {
               <h3 className="font-heading font-semibold text-lg mb-6">Contact Us</h3>
               <ul className="space-y-4">
                 <li className="flex items-start space-x-3">
-                  <MapPin size={20} className="text-accent-gold mt-1 flex-shrink-0" />
+                  <MapPin size={20} className="text-accent mt-1 flex-shrink-0" />
                   <span className="text-gray-400">
                     Pune, Maharashtra<br />
                     India
                   </span>
                 </li>
                 <li className="flex items-center space-x-3">
-                  <Phone size={20} className="text-accent-gold flex-shrink-0" />
+                  <Phone size={20} className="text-accent flex-shrink-0" />
                   <a href="tel:+912012345678" className="text-gray-400 hover:text-white transition-colors">
                     +91 20 1234 5678
                   </a>
                 </li>
                 <li className="flex items-center space-x-3">
-                  <Mail size={20} className="text-accent-gold flex-shrink-0" />
+                  <Mail size={20} className="text-accent flex-shrink-0" />
                   <a href="mailto:info@triopower.com" className="text-gray-400 hover:text-white transition-colors">
                     info@triopower.com
                   </a>

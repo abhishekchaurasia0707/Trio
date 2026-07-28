@@ -5,14 +5,27 @@
 @layer base {
   * {
     @apply border-gray-200;
+    box-sizing: border-box;
   }
   
   html {
     @apply scroll-smooth;
+    width: 100%;
+    min-width: 320px;
+    overflow-x: hidden;
   }
   
   body {
     @apply font-body text-gray-800 bg-gray-50 antialiased;
+    width: 100%;
+    min-width: 320px;
+    overflow-x: hidden;
+  }
+  
+  #root {
+    width: 100%;
+    min-width: 320px;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {

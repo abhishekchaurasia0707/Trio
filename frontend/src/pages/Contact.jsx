@@ -55,17 +55,17 @@ const Contact = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-20 md:py-32">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6">
-              Contact <span className="text-accent-gold">Us</span>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+              Contact <span className="text-accent">Us</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Get in touch with our team for quotes, inquiries, or support
             </p>
           </motion.div>
