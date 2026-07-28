@@ -55,7 +55,7 @@ const Contact = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark pt-32 pb-20 md:pt-40 md:pb-32">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -36,7 +36,7 @@ const Home = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-24 md:pt-32 bg-gradient-to-br from-gray-900 via-primary to-gray-900 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-24 md:pt-32 bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 overflow-hidden">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -59,7 +59,7 @@ const Home = () => {
             opacity: [0.2, 0.4, 0.2]
           }}
           transition={{ duration: 10, repeat: Infinity, delay: 2 }}
-          className="absolute bottom-20 left-20 w-80 h-80 bg-primary/30 rounded-full blur-3xl"
+          className="absolute bottom-20 left-20 w-80 h-80 bg-slate-700/30 rounded-full blur-3xl"
         />
 
         <div className="container-custom relative z-10">
@@ -195,7 +195,7 @@ const Home = () => {
                 <motion.div
                   animate={{ y: [10, -10, 10] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  className="absolute -bottom-2 -left-2 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg"
+                  className="absolute -bottom-2 -left-2 bg-slate-700 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg"
                 >
                   Made in India
                 </motion.div>
@@ -209,7 +209,7 @@ const Home = () => {
                 <motion.div
                   animate={{ y: [15, -15, 15] }}
                   transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
-                  className="absolute bottom-1/4 -right-8 w-20 h-20 bg-primary/30 rounded-full blur-xl"
+                  className="absolute bottom-1/4 -right-8 w-20 h-20 bg-slate-700/30 rounded-full blur-xl"
                 />
               </div>
             </motion.div>
@@ -344,7 +344,7 @@ const Home = () => {
               className="text-center"
             >
               <div className="relative mb-4">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto text-white font-bold text-xl">
+                <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto text-white font-bold text-xl">
                   {process.step}
                 </div>
                 {index < manufacturingProcess.length - 1 && (
