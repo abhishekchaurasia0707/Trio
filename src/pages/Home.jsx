@@ -36,7 +36,7 @@ const Home = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-br from-gray-900 via-primary to-gray-900 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-24 md:pt-32 bg-gradient-to-br from-gray-900 via-primary to-gray-900 overflow-hidden">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -63,7 +63,7 @@ const Home = () => {
         />
 
         <div className="container-custom relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -80,11 +80,11 @@ const Home = () => {
                 <span className="text-white text-sm font-medium">ISO 9001:2015 Certified</span>
               </motion.div>
 
-              <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-7xl text-white mb-6 leading-tight">
+              <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white mb-6 leading-tight">
                 Powering Modern{' '}
                 <span className="text-accent">IT Infrastructure</span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 leading-relaxed">
                 Premium Manufacturer of IT Server Racks, Network Cabinets, PDUs & Rack Accessories.
                 <span className="block text-gray-400 mt-2">Trusted by 1000+ enterprises across India.</span>
               </p>
@@ -100,7 +100,7 @@ const Home = () => {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                 {[
                   { value: '15+', label: 'Years Experience', icon: Wrench },
                   { value: '500+', label: 'Projects Completed', icon: Server },
@@ -112,13 +112,13 @@ const Home = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center hover:bg-white/10 transition-colors"
+                    className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 md:p-4 text-center hover:bg-white/10 transition-colors"
                   >
-                    <stat.icon size={24} className="text-accent mx-auto mb-2" />
-                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">
+                    <stat.icon size={20} className="text-accent mx-auto mb-2" />
+                    <div className="text-xl md:text-3xl font-bold text-white mb-1">
                       <AnimatedCounter end={stat.value} />
                     </div>
-                    <div className="text-gray-400 text-xs">{stat.label}</div>
+                    <div className="text-gray-400 text-[10px] md:text-xs">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>

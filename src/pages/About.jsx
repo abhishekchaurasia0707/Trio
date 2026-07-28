@@ -62,7 +62,7 @@ const About = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-primary to-primary-dark pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -76,10 +76,10 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6">
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
               About <span className="text-accent">Trio Power</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
               Powering India's IT Infrastructure Since 2009
             </p>
             <div className="flex flex-wrap justify-center gap-4">
