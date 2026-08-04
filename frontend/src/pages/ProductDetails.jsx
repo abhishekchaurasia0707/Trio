@@ -1,7 +1,8 @@
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
-import { ArrowLeft, Download, Check, ArrowRight, ShoppingCart } from 'lucide-react'
+import { ArrowLeft, Download, Check, ArrowRight, ShoppingCart, ChevronLeft, ChevronRight, ZoomIn, X } from 'lucide-react'
 import Section, { SectionHeader } from '../components/Section'
 import { products } from '../data/products'
 import jsPDF from 'jspdf'
@@ -9,6 +10,8 @@ import jsPDF from 'jspdf'
 const ProductDetails = () => {
   const { id } = useParams()
   const product = products.find(p => p.id === id)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
   const handleDownloadCatalogue = () => {
     // Create PDF
@@ -141,6 +144,18 @@ const ProductDetails = () => {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
 
+  const productImages = product.images || []
+  const hasImages = productImages.length > 0
+
+  const navigateImage = (direction) => {
+    if (!hasImages) return
+    if (direction === 'next') {
+      setCurrentImageIndex((currentImageIndex + 1) % productImages.length)
+    } else {
+      setCurrentImageIndex((currentImageIndex - 1 + productImages.length) % productImages.length)
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -170,19 +185,68 @@ const ProductDetails = () => {
             animate={{ opacity: 1, x: 0 }}
             className="relative"
           >
-            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-2xl">
-              {product.image ? (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-2xl relative">
+              {hasImages ? (
+                <>
+                  <img
+                    src={productImages[currentImageIndex]}
+                    alt={`${product.name} ${currentImageIndex + 1}`}
+                    className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => setIsLightboxOpen(true)}
+                  />
+                  {/* Navigation Arrows */}
+                  {productImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => navigateImage('prev')}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                      >
+                        <ChevronLeft size={24} />
+                      </button>
+                      <button
+                        onClick={() => navigateImage('next')}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                      >
+                        <ChevronRight size={24} />
+                      </button>
+                    </>
+                  )}
+                  {/* Image Counter */}
+                  {productImages.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                      {currentImageIndex + 1} / {productImages.length}
+                    </div>
+                  )}
+                  {/* Zoom Button */}
+                  <button
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                  >
+                    <ZoomIn size={20} />
+                  </button>
+                </>
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-9xl">📦</div>
                 </div>
               )}
             </div>
+            {/* Image Thumbnails */}
+            {hasImages && productImages.length > 1 && (
+              <div className="flex gap-2 mt-4 justify-center">
+                {productImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentImageIndex(idx)}
+                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                      currentImageIndex === idx ? 'border-accent' : 'border-transparent hover:border-gray-400'
+                    }`}
+                  >
+                    <img src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Product Info */}
@@ -319,6 +383,111 @@ const ProductDetails = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {isLightboxOpen && hasImages && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+            onClick={() => setIsLightboxOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setIsLightboxOpen(false)
+              if (e.key === 'ArrowRight') navigateImage('next')
+              if (e.key === 'ArrowLeft') navigateImage('prev')
+            }}
+            tabIndex={0}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-2"
+              aria-label="Close"
+            >
+              <X size={28} />
+            </button>
+
+            {/* Navigation */}
+            {productImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('prev')
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('next')
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </>
+            )}
+
+            {/* Image Content */}
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="max-w-5xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gray-900 rounded-2xl p-8 text-center">
+                <div className="aspect-square max-h-[70vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
+                  <img 
+                    src={productImages[currentImageIndex]} 
+                    alt={`${product.name} ${currentImageIndex + 1}`} 
+                    className="max-w-full max-h-full object-contain" 
+                  />
+                </div>
+                <h3 className="font-heading font-semibold text-2xl text-white mb-2">
+                  {product.name}
+                </h3>
+                {productImages.length > 1 && (
+                  <div className="text-gray-500 text-sm mb-4">
+                    {currentImageIndex + 1} / {productImages.length}
+                  </div>
+                )}
+                {/* Image Thumbnails */}
+                {productImages.length > 1 && (
+                  <div className="flex justify-center gap-2 mb-4">
+                    {productImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCurrentImageIndex(idx)
+                        }}
+                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                          currentImageIndex === idx ? 'border-accent' : 'border-transparent hover:border-gray-600'
+                        }`}
+                      >
+                        <img src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Keyboard Hint */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
+              {productImages.length > 1 
+                ? 'Use arrow keys to navigate, ESC to close' 
+                : 'ESC to close'}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

@@ -4,7 +4,7 @@ export const products = [
     name: 'IT Server Rack',
     category: 'racks',
     description: 'Heavy-duty server racks designed for data centers and enterprise IT infrastructure. Features superior ventilation, cable management, and load capacity.',
-    image: '',
+    images: [],
     features: [
       'Heavy-duty steel construction',
       'Perforated doors for optimal airflow',
@@ -32,7 +32,7 @@ export const products = [
     name: 'Network Rack',
     category: 'racks',
     description: 'Compact network racks ideal for telecom equipment, switches, and patch panels. Perfect for limited space installations.',
-    image: '',
+    images: [],
     features: [
       'Compact design',
       'Glass front door',
@@ -60,7 +60,13 @@ export const products = [
     name: 'Wall Mount Cabinet',
     category: 'cabinets',
     description: 'Space-saving wall-mount cabinets for edge computing, small networks, and security systems. Ideal for locations with limited floor space.',
-    image: '/products/WallMount.webp',
+    images: [
+      '/products/Wall_Mount1.jpeg',
+      '/products/Wall_Mount2.jpeg',
+      '/products/Wall_Mount3.jpeg',
+      '/products/Wall_Mount4.jpeg',
+      '/products/Wall_Mount5.jpeg'
+    ],
     features: [
       'Wall-mountable design',
       'Lockable glass door',
@@ -88,7 +94,7 @@ export const products = [
     name: 'Open Frame Rack',
     category: 'racks',
     description: 'Open frame racks for maximum airflow and easy access. Perfect for environments requiring frequent equipment changes.',
-    image: '',
+    images: [],
     features: [
       'Open design for maximum airflow',
       'Easy equipment access',
@@ -116,7 +122,7 @@ export const products = [
     name: 'Perforated Door Rack',
     category: 'racks',
     description: 'High-ventilation racks with perforated doors for optimal cooling. Designed for high-density server deployments.',
-    image: '',
+    images: [],
     features: [
       '82% perforation for airflow',
       'Removable doors',
@@ -144,7 +150,21 @@ export const products = [
     name: 'Vertical PDU',
     category: 'pdu',
     description: 'Vertical Power Distribution Units for efficient power management in server racks. Zero U design maximizes rack space.',
-    image: '',
+    images: [
+      '/products/PDU_1.jpeg',
+      '/products/PDU_2.jpeg',
+      '/products/PDU_3.jpeg',
+      '/products/PDU_4.jpeg',
+      '/products/PDU_5.jpeg',
+      '/products/PDU_6.jpeg',
+      '/products/PDU_7.jpeg',
+      '/products/PDU_8.jpeg',
+      '/products/PDU_9.jpeg',
+      '/products/PDU_10.jpeg',
+      '/products/PDU-11.jpeg',
+      '/products/PDU-12.jpeg',
+      '/products/PDU_13.jpeg'
+    ],
     features: [
       'Zero U design',
       'Multiple outlet configurations',
@@ -172,7 +192,7 @@ export const products = [
     name: 'Horizontal PDU',
     category: 'pdu',
     description: 'Horizontal Power Distribution Units for reliable power distribution. Features advanced monitoring and surge protection.',
-    image: '',
+    images: [],
     features: [
       '1U or 0U horizontal mounting',
       'Multiple outlet types',
@@ -200,7 +220,7 @@ export const products = [
     name: 'Rack Accessories',
     category: 'accessories',
     description: 'Complete range of rack accessories including cable managers, shelves, panels, and cooling solutions.',
-    image: '/products/RackAccessories.webp',
+    images: [],
     features: [
       'Cable management arms',
       'Sliding shelves',
@@ -227,7 +247,11 @@ export const products = [
     name: 'Cooling Fan',
     category: 'accessories',
     description: 'High-performance cooling fans for server racks and cabinets. Maintains optimal temperature for equipment.',
-    image: '',
+    images: [
+      '/products/FAN TRAY_3.jpeg',
+      '/products/FAN_TRAY1.jpeg',
+      '/products/fan_tray2.jpeg'
+    ],
     features: [
       'High airflow',
       'Low noise operation',
@@ -255,7 +279,7 @@ export const products = [
     name: 'Panel Harness',
     category: 'accessories',
     description: 'Professional panel harness solutions for organized cable management and power distribution.',
-    image: '',
+    images: [],
     features: [
       'Custom configurations',
       'High-quality connectors',
@@ -283,7 +307,7 @@ export const products = [
     name: 'Cable Management',
     category: 'accessories',
     description: 'Complete cable management solutions for organized and efficient infrastructure.',
-    image: '/products/Cable Management.webp',
+    images: [],
     features: [
       'Cable organizers',
       'D-rings',
@@ -310,7 +334,7 @@ export const products = [
     name: 'Custom Rack Solutions',
     category: 'custom',
     description: 'Bespoke rack solutions designed to meet specific requirements. From concept to manufacturing.',
-    image: '',
+    images: [],
     features: [
       'Custom dimensions',
       'Special configurations',

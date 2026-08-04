@@ -1,32 +1,28 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
-import { X, ZoomIn, Download, ChevronLeft, ChevronRight, Grid, List, Image as ImageIcon, Filter, Maximize2 } from 'lucide-react'
+import { X, ZoomIn, Download, ChevronLeft, ChevronRight, Grid, List, Image as ImageIcon, Filter, Maximize2, ArrowRight } from 'lucide-react'
 import Section, { SectionHeader } from '../components/Section'
+import { products } from '../data/products'
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [viewMode, setViewMode] = useState('grid')
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  const galleryImages = [
-    { id: 1, category: 'racks', title: '42U Server Rack', emoji: '🖥️', image: '', description: 'Heavy-duty server rack for data centers', featured: true },
-    { id: 2, category: 'racks', title: 'Network Cabinet', emoji: '📡', image: '', description: 'Compact network cabinet for telecom', featured: false },
-    { id: 3, category: 'cabinets', title: 'Wall Mount Cabinet', emoji: '📦', image: '/products/WallMount.webp', description: 'Space-saving wall mount solution', featured: false },
-    { id: 4, category: 'pdu', title: 'Vertical PDU', emoji: '🔌', image: '', description: 'Zero-U power distribution unit', featured: true },
-    { id: 5, category: 'accessories', title: 'Cable Management', emoji: '🔗', image: '/products/Cable Management.webp', description: 'Professional cable organizers', featured: false },
-    { id: 6, category: 'racks', title: 'Open Frame Rack', emoji: '🏗️', image: '', description: 'Maximum airflow open design', featured: false },
-    { id: 7, category: 'cabinets', title: 'Perforated Door Rack', emoji: '🚪', image: '', description: 'High-ventilation server rack', featured: true },
-    { id: 8, category: 'pdu', title: 'Horizontal PDU', emoji: '⚡', image: '', description: '1U horizontal power strip', featured: false },
-    { id: 9, category: 'accessories', title: 'Cooling Fan', emoji: '❄️', image: '', description: 'High-performance cooling solution', featured: false },
-    { id: 10, category: 'racks', title: 'Custom Rack Solution', emoji: '🔧', image: '', description: 'Bespoke rack manufacturing', featured: true },
-    { id: 11, category: 'accessories', title: 'Rack Accessories', emoji: '🛠️', image: '/products/RackAccessories.webp', description: 'Complete accessory range', featured: false },
-    { id: 12, category: 'manufacturing', title: 'Manufacturing Unit', emoji: '🏭', image: '', description: 'State-of-the-art facility', featured: true },
-    { id: 13, category: 'manufacturing', title: 'Quality Control Lab', emoji: '🔬', image: '', description: 'Rigorous testing facility', featured: false },
-    { id: 14, category: 'racks', title: '45U Server Rack', emoji: '🖥️', image: '', description: 'Enterprise server rack', featured: false },
-    { id: 15, category: 'cabinets', title: 'Server Cabinet', emoji: '🗄️', image: '', description: 'Secure server storage', featured: false },
-    { id: 16, category: 'pdu', title: 'Smart PDU', emoji: '🔌', image: '', description: 'Intelligent power management', featured: true },
-  ]
+  // Convert products to gallery format
+  const galleryImages = products.map((product, index) => ({
+    id: product.id,
+    category: product.category,
+    title: product.name,
+    description: product.description,
+    images: product.images || [],
+    featured: index < 4,
+    productId: product.id
+  }))
 
   const categories = [
     { id: 'all', name: 'All Items', icon: Filter },
@@ -34,7 +30,7 @@ const Gallery = () => {
     { id: 'cabinets', name: 'Cabinets', icon: ImageIcon },
     { id: 'pdu', name: 'Power Distribution', icon: Maximize2 },
     { id: 'accessories', name: 'Accessories', icon: Filter },
-    { id: 'manufacturing', name: 'Manufacturing', icon: ImageIcon }
+    { id: 'custom', name: 'Custom Solutions', icon: Filter }
   ]
 
   const filteredImages = selectedCategory === 'all'
@@ -42,21 +38,34 @@ const Gallery = () => {
     : galleryImages.filter(img => img.category === selectedCategory)
 
   const navigateImage = (direction) => {
-    const currentIndex = galleryImages.findIndex(img => img.id === selectedImage.id)
+    if (!selectedProduct) return
+    const images = selectedProduct.images
+    if (images.length === 0) return
+    
     let newIndex
     if (direction === 'next') {
-      newIndex = (currentIndex + 1) % galleryImages.length
+      newIndex = (currentImageIndex + 1) % images.length
     } else {
-      newIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length
+      newIndex = (currentImageIndex - 1 + images.length) % images.length
     }
-    setSelectedImage(galleryImages[newIndex])
+    setCurrentImageIndex(newIndex)
   }
 
   const handleKeyDown = (e) => {
-    if (!selectedImage) return
-    if (e.key === 'Escape') setSelectedImage(null)
+    if (!selectedProduct) return
+    if (e.key === 'Escape') {
+      setSelectedProduct(null)
+      setCurrentImageIndex(0)
+    }
     if (e.key === 'ArrowRight') navigateImage('next')
     if (e.key === 'ArrowLeft') navigateImage('prev')
+  }
+
+  const handleProductClick = (product) => {
+    if (product.images && product.images.length > 0) {
+      setSelectedProduct(product)
+      setCurrentImageIndex(0)
+    }
   }
 
   return (
@@ -171,24 +180,36 @@ const Gallery = () => {
         {/* Gallery Grid */}
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredImages.map((image, index) => (
+            {filteredImages.map((product, index) => (
               <motion.div
-                key={image.id}
+                key={product.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
                 className="relative group cursor-pointer overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
-                onClick={() => setSelectedImage(image)}
               >
-                <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
-                  {image.image ? (
-                    <img src={image.image} alt={image.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div 
+                  className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden"
+                  onClick={() => handleProductClick(product)}
+                >
+                  {product.images && product.images.length > 0 ? (
+                    <img 
+                      src={product.images[0]} 
+                      alt={product.title} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
                   ) : (
-                    <span className="text-6xl">{image.emoji}</span>
+                    <span className="text-6xl">📦</span>
+                  )}
+                  {/* Image Count Badge */}
+                  {product.images && product.images.length > 1 && (
+                    <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                      {product.images.length} photos
+                    </div>
                   )}
                   {/* Featured Badge */}
-                  {image.featured && (
+                  {product.featured && (
                     <div className="absolute top-2 left-2 bg-accent text-white px-2 py-1 rounded-full text-xs font-semibold">
                       Featured
                     </div>
@@ -197,11 +218,23 @@ const Gallery = () => {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="text-white font-semibold text-sm mb-1">{image.title}</p>
-                    <p className="text-gray-300 text-xs line-clamp-2">{image.description}</p>
-                    <div className="flex items-center mt-2 text-accent text-xs font-medium">
-                      <ZoomIn size={14} className="mr-1" />
-                      View Full
+                    <p className="text-white font-semibold text-sm mb-1">{product.title}</p>
+                    <p className="text-gray-300 text-xs line-clamp-2">{product.description}</p>
+                    <div className="flex items-center justify-between mt-2">
+                      {product.images && product.images.length > 0 ? (
+                        <div className="flex items-center text-accent text-xs font-medium">
+                          <ZoomIn size={14} className="mr-1" />
+                          View Gallery
+                        </div>
+                      ) : (
+                        <Link 
+                          to={`/products/${product.productId}`}
+                          className="flex items-center text-accent text-xs font-medium hover:text-white transition-colors"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          View Details <ArrowRight size={14} className="ml-1" />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -210,37 +243,52 @@ const Gallery = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredImages.map((image, index) => (
+            {filteredImages.map((product, index) => (
               <motion.div
-                key={image.id}
+                key={product.id}
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow cursor-pointer"
-                onClick={() => setSelectedImage(image)}
+                className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
               >
                 <div className="flex gap-6 p-4">
-                  <div className="w-32 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    {image.image ? (
-                      <img src={image.image} alt={image.title} className="w-full h-full object-cover" />
+                  <div 
+                    className="w-32 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer"
+                    onClick={() => handleProductClick(product)}
+                  >
+                    {product.images && product.images.length > 0 ? (
+                      <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-4xl">{image.emoji}</span>
+                      <span className="text-4xl">📦</span>
                     )}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-heading font-semibold text-lg text-gray-900">{image.title}</h3>
-                      {image.featured && (
+                      <h3 className="font-heading font-semibold text-lg text-gray-900">{product.title}</h3>
+                      {product.featured && (
                         <span className="bg-accent text-white px-2 py-1 rounded-full text-xs font-semibold">
                           Featured
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-600 text-sm mb-2">{image.description}</p>
-                    <div className="flex items-center text-primary text-sm font-medium">
-                      <ZoomIn size={14} className="mr-1" />
-                      View Full Image
+                    <p className="text-gray-600 text-sm mb-2">{product.description}</p>
+                    <div className="flex items-center gap-4">
+                      {product.images && product.images.length > 0 ? (
+                        <button 
+                          onClick={() => handleProductClick(product)}
+                          className="flex items-center text-primary text-sm font-medium hover:text-accent transition-colors"
+                        >
+                          <ZoomIn size={14} className="mr-1" />
+                          View Gallery ({product.images.length})
+                        </button>
+                      ) : null}
+                      <Link 
+                        to={`/products/${product.productId}`}
+                        className="flex items-center text-primary text-sm font-medium hover:text-accent transition-colors"
+                      >
+                        View Details <ArrowRight size={14} className="ml-1" />
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -266,13 +314,16 @@ const Gallery = () => {
 
       {/* Lightbox */}
       <AnimatePresence>
-        {selectedImage && (
+        {selectedProduct && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
+            onClick={() => {
+              setSelectedProduct(null)
+              setCurrentImageIndex(0)
+            }}
             onKeyDown={handleKeyDown}
             tabIndex={0}
           >
@@ -285,26 +336,30 @@ const Gallery = () => {
             </button>
 
             {/* Navigation */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                navigateImage('prev')
-              }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
-              aria-label="Previous image"
-            >
-              <ChevronLeft size={32} />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                navigateImage('next')
-              }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
-              aria-label="Next image"
-            >
-              <ChevronRight size={32} />
-            </button>
+            {selectedProduct.images && selectedProduct.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('prev')
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('next')
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </>
+            )}
 
             {/* Image Content */}
             <motion.div
@@ -315,35 +370,72 @@ const Gallery = () => {
             >
               <div className="bg-gray-900 rounded-2xl p-8 text-center">
                 <div className="aspect-square max-h-[70vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-                  {selectedImage.image ? (
-                    <img src={selectedImage.image} alt={selectedImage.title} className="max-w-full max-h-full object-contain" />
-                  ) : (
-                    <span className="text-9xl">{selectedImage.emoji}</span>
+                  {selectedProduct.images && selectedProduct.images.length > 0 && (
+                    <img 
+                      src={selectedProduct.images[currentImageIndex]} 
+                      alt={selectedProduct.title} 
+                      className="max-w-full max-h-full object-contain" 
+                    />
                   )}
-                  {selectedImage.featured && (
+                  {selectedProduct.featured && (
                     <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
                       Featured
                     </div>
                   )}
                 </div>
                 <h3 className="font-heading font-semibold text-2xl text-white mb-2">
-                  {selectedImage.title}
+                  {selectedProduct.title}
                 </h3>
-                <p className="text-gray-400 mb-4">{selectedImage.description}</p>
-                <div className="flex items-center justify-center gap-4">
+                <p className="text-gray-400 mb-4">{selectedProduct.description}</p>
+                <div className="flex items-center justify-center gap-4 mb-4">
                   <span className="px-3 py-1 bg-primary/30 text-primary-300 rounded-full text-sm capitalize">
-                    {selectedImage.category}
+                    {selectedProduct.category}
                   </span>
-                  <div className="text-gray-500 text-sm">
-                    {galleryImages.findIndex(img => img.id === selectedImage.id) + 1} / {galleryImages.length}
-                  </div>
+                  {selectedProduct.images && selectedProduct.images.length > 1 && (
+                    <div className="text-gray-500 text-sm">
+                      {currentImageIndex + 1} / {selectedProduct.images.length}
+                    </div>
+                  )}
                 </div>
+                {/* Image Thumbnails */}
+                {selectedProduct.images && selectedProduct.images.length > 1 && (
+                  <div className="flex justify-center gap-2 mb-4">
+                    {selectedProduct.images.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCurrentImageIndex(idx)
+                        }}
+                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                          currentImageIndex === idx ? 'border-accent' : 'border-transparent hover:border-gray-600'
+                        }`}
+                      >
+                        <img src={img} alt={`${selectedProduct.title} ${idx + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {/* View Product Details Button */}
+                <Link
+                  to={`/products/${selectedProduct.productId}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setSelectedProduct(null)
+                    setCurrentImageIndex(0)
+                  }}
+                  className="inline-flex items-center px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-colors"
+                >
+                  View Product Details <ArrowRight size={20} className="ml-2" />
+                </Link>
               </div>
             </motion.div>
 
             {/* Keyboard Hint */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
-              Use arrow keys to navigate, ESC to close
+              {selectedProduct.images && selectedProduct.images.length > 1 
+                ? 'Use arrow keys to navigate, ESC to close' 
+                : 'ESC to close'}
             </div>
           </motion.div>
         )}
