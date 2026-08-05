@@ -75,9 +75,9 @@ const Products = () => {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
           {/* Image */}
           <div className="relative h-56 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-            {product.image ? (
+            {product.images && product.images.length > 0 ? (
               <img
-                src={product.image}
+                src={product.images[0]}
                 alt={product.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
@@ -148,8 +148,8 @@ const Products = () => {
         <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 flex gap-6">
           {/* Image */}
           <div className="w-32 h-32 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-            {product.image ? (
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            {product.images && product.images.length > 0 ? (
+              <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
             ) : (
               <span className="text-4xl">📦</span>
             )}
