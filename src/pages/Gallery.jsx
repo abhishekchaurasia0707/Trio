@@ -76,88 +76,162 @@ const Gallery = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+      <section className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
         </div>
+        {/* Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
         <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6">
-              Product <span className="text-accent">Gallery</span>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="inline-block mb-6"
+            >
+              <span className="px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-semibold border border-accent/30">
+                Visual Excellence
+              </span>
+            </motion.div>
+            <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-6 leading-tight">
+              Product <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/70">Gallery</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              Explore our range of IT infrastructure solutions and manufacturing excellence
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+              Explore our comprehensive range of IT infrastructure solutions through stunning visuals. 
+              From server racks to custom manufacturing excellence.
             </p>
             
             {/* Stats */}
-            <div className="flex justify-center gap-8 md:gap-16">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent">{galleryImages.length}+</div>
-                <div className="text-gray-400 text-sm">Images</div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="flex justify-center gap-8 md:gap-16"
+            >
+              <div className="text-center group">
+                <div className="text-4xl md:text-5xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">{galleryImages.filter(p => p.images && p.images.length > 0).length}+</div>
+                <div className="text-gray-400 text-sm mt-1">Products</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent">{categories.length - 1}</div>
-                <div className="text-gray-400 text-sm">Categories</div>
+              <div className="text-center group">
+                <div className="text-4xl md:text-5xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">{galleryImages.reduce((acc, p) => acc + (p.images?.length || 0), 0)}+</div>
+                <div className="text-gray-400 text-sm mt-1">Images</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-accent">HD</div>
-                <div className="text-gray-400 text-sm">Quality</div>
+              <div className="text-center group">
+                <div className="text-4xl md:text-5xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">{categories.length - 1}</div>
+                <div className="text-gray-400 text-sm mt-1">Categories</div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
+      {/* Featured Section */}
+      <Section className="bg-gradient-to-r from-gray-50 to-white">
+        <div className="mb-12">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-gray-900 mb-2">Featured Products</h2>
+          <p className="text-gray-600">Highlighting our most popular solutions</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {galleryImages.filter(g => g.featured && g.images && g.images.length > 0).slice(0, 2).map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+              className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500"
+              onClick={() => handleProductClick(product)}
+            >
+              <div className="aspect-[16/9] relative overflow-hidden">
+                <img 
+                  src={product.images[0]} 
+                  alt={product.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-accent text-white rounded-full text-xs font-semibold shadow-lg">
+                    Featured
+                  </span>
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-black/70 text-white rounded-full text-xs font-semibold backdrop-blur-sm">
+                    {product.images.length} photos
+                  </span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="font-heading font-bold text-xl text-white mb-2">{product.title}</h3>
+                  <p className="text-gray-300 text-sm line-clamp-2 mb-3">{product.description}</p>
+                  <div className="flex items-center text-accent font-medium">
+                    <ZoomIn size={16} className="mr-2" />
+                    View Gallery
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
+
       {/* Gallery */}
       <Section>
-        <SectionHeader title="Our Work" subtitle="Showcasing our products and facilities" />
+        <SectionHeader title="All Products" subtitle="Browse our complete product collection" />
         
         {/* Controls Bar */}
         <div className="mb-8 space-y-6">
           {/* Filter */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-50 rounded-xl p-4">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4 bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
             {/* Categories */}
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-3">
               {categories.map((category) => (
-                <button
+                <motion.button
                   key={category.id}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center space-x-2 ${
+                  className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 flex items-center space-x-2 ${
                     selectedCategory === category.id
-                      ? 'bg-primary text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-200'
+                      ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
                   }`}
                 >
                   <category.icon size={16} />
                   <span>{category.name}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
 
             {/* View Toggle */}
-            <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-              <button
+            <div className="flex bg-gray-100 rounded-xl p-1">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode('grid')}
-                className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                className={`px-4 py-2 rounded-lg transition-all duration-300 ${viewMode === 'grid' ? 'bg-white text-primary shadow-md' : 'text-gray-600 hover:text-gray-900'}`}
                 aria-label="Grid view"
               >
                 <Grid size={20} />
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode('list')}
-                className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                className={`px-4 py-2 rounded-lg transition-all duration-300 ${viewMode === 'list' ? 'bg-white text-primary shadow-md' : 'text-gray-600 hover:text-gray-900'}`}
                 aria-label="List view"
               >
                 <List size={20} />
-              </button>
+              </motion.button>
             </div>
           </div>
 
@@ -179,63 +253,76 @@ const Gallery = () => {
 
         {/* Gallery Grid */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredImages.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="relative group cursor-pointer overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
               >
                 <div 
-                  className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden"
+                  className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden"
                   onClick={() => handleProductClick(product)}
                 >
                   {product.images && product.images.length > 0 ? (
                     <img 
                       src={product.images[0]} 
                       alt={product.title} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     />
                   ) : (
-                    <span className="text-6xl">📦</span>
+                    <div className="text-6xl opacity-50">📦</div>
                   )}
                   {/* Image Count Badge */}
                   {product.images && product.images.length > 1 && (
-                    <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
+                    >
                       {product.images.length} photos
-                    </div>
+                    </motion.div>
                   )}
                   {/* Featured Badge */}
                   {product.featured && (
-                    <div className="absolute top-2 left-2 bg-accent text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      className="absolute top-3 left-3 bg-gradient-to-r from-accent to-accent/80 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
+                    >
                       Featured
-                    </div>
+                    </motion.div>
                   )}
-                </div>
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="text-white font-semibold text-sm mb-1">{product.title}</p>
-                    <p className="text-gray-300 text-xs line-clamp-2">{product.description}</p>
-                    <div className="flex items-center justify-between mt-2">
-                      {product.images && product.images.length > 0 ? (
-                        <div className="flex items-center text-accent text-xs font-medium">
-                          <ZoomIn size={14} className="mr-1" />
-                          View Gallery
-                        </div>
-                      ) : (
-                        <Link 
-                          to={`/products/${product.productId}`}
-                          className="flex items-center text-accent text-xs font-medium hover:text-white transition-colors"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          View Details <ArrowRight size={14} className="ml-1" />
-                        </Link>
-                      )}
-                    </div>
+                  {/* Quick Action Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-5">
+                    <motion.div 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+                    >
+                      <h3 className="text-white font-bold text-lg mb-2">{product.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2 mb-3">{product.description}</p>
+                      <div className="flex items-center justify-between">
+                        {product.images && product.images.length > 0 ? (
+                          <div className="flex items-center text-accent font-semibold text-sm">
+                            <ZoomIn size={16} className="mr-2" />
+                            View Gallery
+                          </div>
+                        ) : (
+                          <Link 
+                            to={`/products/${product.productId}`}
+                            className="flex items-center text-accent font-semibold text-sm hover:text-white transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            View Details <ArrowRight size={16} className="ml-2" />
+                          </Link>
+                        )}
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -246,49 +333,64 @@ const Gallery = () => {
             {filteredImages.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 group"
               >
-                <div className="flex gap-6 p-4">
-                  <div 
-                    className="w-32 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer"
+                <div className="flex gap-6 p-6">
+                  <motion.div 
+                    className="w-40 h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer shadow-md group-hover:shadow-lg transition-shadow"
+                    whileHover={{ scale: 1.05 }}
                     onClick={() => handleProductClick(product)}
                   >
                     {product.images && product.images.length > 0 ? (
                       <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-4xl">📦</span>
+                      <span className="text-5xl opacity-50">📦</span>
                     )}
-                  </div>
+                  </motion.div>
                   <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-heading font-semibold text-lg text-gray-900">{product.title}</h3>
-                      {product.featured && (
-                        <span className="bg-accent text-white px-2 py-1 rounded-full text-xs font-semibold">
-                          Featured
-                        </span>
-                      )}
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-heading font-bold text-xl text-gray-900 group-hover:text-primary transition-colors">{product.title}</h3>
+                      <div className="flex gap-2">
+                        {product.featured && (
+                          <span className="bg-gradient-to-r from-accent to-accent/80 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">
+                            Featured
+                          </span>
+                        )}
+                        {product.images && product.images.length > 1 && (
+                          <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            {product.images.length} photos
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-gray-600 text-sm mb-2">{product.description}</p>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
                     <div className="flex items-center gap-4">
                       {product.images && product.images.length > 0 ? (
-                        <button 
+                        <motion.button 
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => handleProductClick(product)}
-                          className="flex items-center text-primary text-sm font-medium hover:text-accent transition-colors"
+                          className="flex items-center px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-accent transition-colors shadow-md"
                         >
-                          <ZoomIn size={14} className="mr-1" />
-                          View Gallery ({product.images.length})
-                        </button>
+                          <ZoomIn size={16} className="mr-2" />
+                          View Gallery
+                        </motion.button>
                       ) : null}
-                      <Link 
-                        to={`/products/${product.productId}`}
-                        className="flex items-center text-primary text-sm font-medium hover:text-accent transition-colors"
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        View Details <ArrowRight size={14} className="ml-1" />
-                      </Link>
+                        <Link 
+                          to={`/products/${product.productId}`}
+                          className="flex items-center text-primary font-semibold hover:text-accent transition-colors"
+                        >
+                          View Details <ArrowRight size={16} className="ml-2" />
+                        </Link>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
@@ -298,17 +400,28 @@ const Gallery = () => {
         )}
 
         {filteredImages.length === 0 && (
-          <div className="text-center py-16 bg-gray-50 rounded-2xl">
-            <ImageIcon size={64} className="text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No images found</h3>
-            <p className="text-gray-500 mb-6">Try selecting a different category</p>
-            <button
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-20 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl border-2 border-dashed border-gray-200"
+          >
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <ImageIcon size={80} className="text-gray-300 mx-auto mb-6" />
+            </motion.div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">No images found</h3>
+            <p className="text-gray-500 mb-8">Try selecting a different category to explore our collection</p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedCategory('all')}
-              className="btn-primary"
+              className="px-8 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
             >
               View All Images
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         )}
       </Section>
 
@@ -319,7 +432,7 @@ const Gallery = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-4 md:p-8"
             onClick={() => {
               setSelectedProduct(null)
               setCurrentImageIndex(0)
@@ -328,111 +441,128 @@ const Gallery = () => {
             tabIndex={0}
           >
             {/* Close Button */}
-            <button
-              className="absolute top-4 right-4 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-2"
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              className="absolute top-4 right-4 md:top-6 md:right-6 text-white hover:text-accent transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-3 shadow-lg"
               aria-label="Close"
             >
               <X size={28} />
-            </button>
+            </motion.button>
 
             {/* Navigation */}
             {selectedProduct.images && selectedProduct.images.length > 1 && (
               <>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation()
                     navigateImage('prev')
                   }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-4 shadow-lg"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft size={32} />
-                </button>
-                <button
+                  <ChevronLeft size={36} />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation()
                     navigateImage('next')
                   }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-4 shadow-lg"
                   aria-label="Next image"
                 >
-                  <ChevronRight size={32} />
-                </button>
+                  <ChevronRight size={36} />
+                </motion.button>
               </>
             )}
 
             {/* Image Content */}
             <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="max-w-5xl w-full"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              className="max-w-6xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gray-900 rounded-2xl p-8 text-center">
-                <div className="aspect-square max-h-[70vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
+              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 md:p-10 text-center shadow-2xl border border-gray-700">
+                <div className="aspect-square max-h-[75vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden shadow-inner">
                   {selectedProduct.images && selectedProduct.images.length > 0 && (
-                    <img 
+                    <motion.img 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      key={currentImageIndex}
                       src={selectedProduct.images[currentImageIndex]} 
                       alt={selectedProduct.title} 
                       className="max-w-full max-h-full object-contain" 
-                    />
+                    }
                   )}
                   {selectedProduct.featured && (
-                    <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-accent to-accent/80 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                       Featured
                     </div>
                   )}
                 </div>
-                <h3 className="font-heading font-semibold text-2xl text-white mb-2">
+                <h3 className="font-heading font-bold text-2xl md:text-3xl text-white mb-3">
                   {selectedProduct.title}
                 </h3>
-                <p className="text-gray-400 mb-4">{selectedProduct.description}</p>
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <span className="px-3 py-1 bg-primary/30 text-primary-300 rounded-full text-sm capitalize">
+                <p className="text-gray-400 mb-6 max-w-2xl mx-auto">{selectedProduct.description}</p>
+                <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+                  <span className="px-4 py-2 bg-gradient-to-r from-primary/30 to-primary/20 text-primary-300 rounded-full text-sm font-medium capitalize border border-primary/30">
                     {selectedProduct.category}
                   </span>
                   {selectedProduct.images && selectedProduct.images.length > 1 && (
-                    <div className="text-gray-500 text-sm">
+                    <div className="px-4 py-2 bg-gray-800 text-gray-300 rounded-full text-sm font-medium border border-gray-700">
                       {currentImageIndex + 1} / {selectedProduct.images.length}
                     </div>
                   )}
                 </div>
                 {/* Image Thumbnails */}
                 {selectedProduct.images && selectedProduct.images.length > 1 && (
-                  <div className="flex justify-center gap-2 mb-4">
+                  <div className="flex justify-center gap-3 mb-6 flex-wrap">
                     {selectedProduct.images.map((img, idx) => (
-                      <button
+                      <motion.button
                         key={idx}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation()
                           setCurrentImageIndex(idx)
                         }}
-                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                          currentImageIndex === idx ? 'border-accent' : 'border-transparent hover:border-gray-600'
+                        className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shadow-lg ${
+                          currentImageIndex === idx ? 'border-accent ring-2 ring-accent/50' : 'border-transparent hover:border-gray-600'
                         }`}
                       >
                         <img src={img} alt={`${selectedProduct.title} ${idx + 1}`} className="w-full h-full object-cover" />
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 )}
                 {/* View Product Details Button */}
-                <Link
-                  to={`/products/${selectedProduct.productId}`}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setSelectedProduct(null)
-                    setCurrentImageIndex(0)
-                  }}
-                  className="inline-flex items-center px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-colors"
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  View Product Details <ArrowRight size={20} className="ml-2" />
-                </Link>
+                  <Link
+                    to={`/products/${selectedProduct.productId}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedProduct(null)
+                      setCurrentImageIndex(0)
+                    }}
+                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-white rounded-xl font-bold hover:shadow-2xl transition-all duration-300 shadow-lg"
+                  >
+                    View Product Details <ArrowRight size={20} className="ml-2" />
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
 
             {/* Keyboard Hint */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 text-sm bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full">
               {selectedProduct.images && selectedProduct.images.length > 1 
                 ? 'Use arrow keys to navigate, ESC to close' 
                 : 'ESC to close'}

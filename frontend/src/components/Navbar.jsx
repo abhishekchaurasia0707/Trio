@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Phone, Mail, ShoppingCart } from 'lucide-react'
+import { Menu, X, Phone, Mail, ShoppingCart, Image as ImageIcon, Sparkles } from 'lucide-react'
 
 const Navbar = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -12,7 +12,7 @@ const Navbar = ({ scrolled }) => {
     { name: 'About', path: '/about' },
     { name: 'Products', path: '/products' },
     { name: 'Industries', path: '/industries' },
-    { name: 'Gallery', path: '/gallery' },
+    { name: 'Gallery', path: '/gallery', icon: ImageIcon, featured: true },
     { name: 'Contact', path: '/contact' },
   ]
 
@@ -47,13 +47,27 @@ const Navbar = ({ scrolled }) => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
                   location.pathname === link.path
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-primary'
+                    ? link.featured 
+                      ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                      : 'bg-primary/10 text-primary'
+                    : link.featured
+                      ? 'text-accent hover:bg-accent/10'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-primary'
                 }`}
               >
+                {link.icon && <link.icon size={16} />}
                 {link.name}
+                {link.featured && (
+                  <motion.span
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute -top-1 -right-1"
+                  >
+                    <Sparkles size={12} className="text-accent" />
+                  </motion.span>
+                )}
               </Link>
             ))}
 
@@ -101,13 +115,26 @@ const Navbar = ({ scrolled }) => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`block py-4 px-5 rounded-xl font-medium transition-all duration-200 ${
+                  className={`block py-4 px-5 rounded-xl font-medium transition-all duration-200 flex items-center space-x-3 ${
                     location.pathname === link.path
-                      ? 'bg-gradient-to-r from-primary to-primary-300 text-white shadow-md'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? link.featured
+                        ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                        : 'bg-gradient-to-r from-primary to-primary-300 text-white shadow-md'
+                      : link.featured
+                        ? 'text-accent hover:bg-accent/10'
+                        : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
+                  {link.icon && <link.icon size={20} />}
                   {link.name}
+                  {link.featured && (
+                    <motion.span
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Sparkles size={14} className="text-accent" />
+                    </motion.span>
+                  )}
                 </Link>
               ))}
 
