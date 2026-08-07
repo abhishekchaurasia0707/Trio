@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
@@ -12,8 +12,6 @@ const Gallery = () => {
   const [viewMode, setViewMode] = useState('grid')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [allImages, setAllImages] = useState([])
-  const [currentAllImageIndex, setCurrentAllImageIndex] = useState(0)
 
   // Convert products to gallery format
   const galleryImages = products.map((product, index) => ({
@@ -26,26 +24,6 @@ const Gallery = () => {
     productId: product.id
   }))
 
-  // Flatten all images for carousel view
-  const flattenImages = () => {
-    const flattened = []
-    galleryImages.forEach(product => {
-      if (product.images && product.images.length > 0) {
-        product.images.forEach((img, imgIndex) => {
-          flattened.push({
-            src: img,
-            product: product,
-            imageIndex: imgIndex
-          })
-        })
-      }
-    })
-    return flattened
-  }
-
-  useEffect(() => {
-    setAllImages(flattenImages())
-  }, [galleryImages])
 
   const categories = [
     { id: 'all', name: 'All Items', icon: Filter },
@@ -79,10 +57,9 @@ const Gallery = () => {
     if (e.key === 'Escape') {
       setSelectedProduct(null)
       setCurrentImageIndex(0)
-      setCurrentAllImageIndex(0)
     }
-    if (e.key === 'ArrowRight') navigateAllImages('next')
-    if (e.key === 'ArrowLeft') navigateAllImages('prev')
+    if (e.key === 'ArrowRight') navigateImage('next')
+    if (e.key === 'ArrowLeft') navigateImage('prev')
   }
 
   const handleProductClick = (product) => {
@@ -90,25 +67,6 @@ const Gallery = () => {
       setSelectedProduct(product)
       setCurrentImageIndex(0)
     }
-  }
-
-  const handleImageClick = (product, imageIndex) => {
-    setSelectedProduct(product)
-    setCurrentImageIndex(imageIndex)
-  }
-
-  const navigateAllImages = (direction) => {
-    if (allImages.length === 0) return
-    
-    let newIndex
-    if (direction === 'next') {
-      newIndex = (currentAllImageIndex + 1) % allImages.length
-    } else {
-      newIndex = (currentAllImageIndex - 1 + allImages.length) % allImages.length
-    }
-    setCurrentAllImageIndex(newIndex)
-    setSelectedProduct(allImages[newIndex].product)
-    setCurrentImageIndex(allImages[newIndex].imageIndex)
   }
 
   return (
@@ -296,36 +254,80 @@ const Gallery = () => {
 
         {/* Gallery Grid */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {filteredImages.map((product, productIndex) => {
-              const startIndex = allImages.findIndex(img => img.product.id === product.id)
-              return (product.images || []).map((img, imgIndex) => {
-                const globalIndex = startIndex + imgIndex
-                return (
-                  <motion.div
-                    key={`${product.id}-${imgIndex}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ delay: (productIndex * 0.05) + (imgIndex * 0.02), duration: 0.4 }}
-                    className="relative group cursor-pointer overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 bg-white"
-                    onClick={() => handleImageClick(product, imgIndex)}
-                  >
-                    <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-                      <img 
-                        src={img} 
-                        alt={`${product.title} ${imgIndex + 1}`} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                      <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <p className="text-white text-xs font-semibold truncate">{product.title}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredImages.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 bg-white"
+              >
+                <div 
+                  className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden"
+                  onClick={() => handleProductClick(product)}
+                >
+                  {product.images && product.images.length > 0 ? (
+                    <img 
+                      src={product.images[0]} 
+                      alt={product.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    />
+                  ) : (
+                    <div className="text-6xl opacity-50">📦</div>
+                  )}
+                  {/* Image Count Badge */}
+                  {product.images && product.images.length > 1 && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
+                    >
+                      {product.images.length} photos
+                    </motion.div>
+                  )}
+                  {/* Featured Badge */}
+                  {product.featured && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      className="absolute top-3 left-3 bg-gradient-to-r from-accent to-accent/80 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
+                    >
+                      Featured
+                    </motion.div>
+                  )}
+                  {/* Quick Action Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-5">
+                    <motion.div 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+                    >
+                      <h3 className="text-white font-bold text-lg mb-2">{product.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2 mb-3">{product.description}</p>
+                      <div className="flex items-center justify-between">
+                        {product.images && product.images.length > 0 ? (
+                          <div className="flex items-center text-accent font-semibold text-sm">
+                            <ZoomIn size={16} className="mr-2" />
+                            View Gallery
+                          </div>
+                        ) : (
+                          <Link 
+                            to={`/products/${product.productId}`}
+                            className="flex items-center text-accent font-semibold text-sm hover:text-white transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            View Details <ArrowRight size={16} className="ml-2" />
+                          </Link>
+                        )}
                       </div>
-                    </div>
-                  </motion.div>
-                )
-              })
-            }).flat()}
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         ) : (
           <div className="space-y-4">
@@ -435,7 +437,6 @@ const Gallery = () => {
             onClick={() => {
               setSelectedProduct(null)
               setCurrentImageIndex(0)
-              setCurrentAllImageIndex(0)
             }}
             onKeyDown={handleKeyDown}
             tabIndex={0}
@@ -451,14 +452,14 @@ const Gallery = () => {
             </motion.button>
 
             {/* Navigation */}
-            {allImages.length > 1 && (
+            {selectedProduct.images && selectedProduct.images.length > 1 && (
               <>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation()
-                    navigateAllImages('prev')
+                    navigateImage('prev')
                   }}
                   className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-4 shadow-lg"
                   aria-label="Previous image"
@@ -470,7 +471,7 @@ const Gallery = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation()
-                    navigateAllImages('next')
+                    navigateImage('next')
                   }}
                   className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-4 shadow-lg"
                   aria-label="Next image"
@@ -514,31 +515,29 @@ const Gallery = () => {
                   <span className="px-4 py-2 bg-gradient-to-r from-primary/30 to-primary/20 text-primary-300 rounded-full text-sm font-medium capitalize border border-primary/30">
                     {selectedProduct.category}
                   </span>
-                  {allImages.length > 1 && (
+                  {selectedProduct.images && selectedProduct.images.length > 1 && (
                     <div className="px-4 py-2 bg-gray-800 text-gray-300 rounded-full text-sm font-medium border border-gray-700">
-                      {currentAllImageIndex + 1} / {allImages.length}
+                      {currentImageIndex + 1} / {selectedProduct.images.length}
                     </div>
                   )}
                 </div>
                 {/* Image Thumbnails */}
-                {allImages.length > 1 && (
-                  <div className="flex justify-center gap-2 mb-6 flex-wrap max-h-32 overflow-y-auto">
-                    {allImages.map((imgData, idx) => (
+                {selectedProduct.images && selectedProduct.images.length > 1 && (
+                  <div className="flex justify-center gap-3 mb-6 flex-wrap">
+                    {selectedProduct.images.map((img, idx) => (
                       <motion.button
                         key={idx}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation()
-                          setCurrentAllImageIndex(idx)
-                          setSelectedProduct(imgData.product)
-                          setCurrentImageIndex(imgData.imageIndex)
+                          setCurrentImageIndex(idx)
                         }}
-                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shadow-lg flex-shrink-0 ${
-                          currentAllImageIndex === idx ? 'border-accent ring-2 ring-accent/50' : 'border-transparent hover:border-gray-600'
+                        className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shadow-lg ${
+                          currentImageIndex === idx ? 'border-accent ring-2 ring-accent/50' : 'border-transparent hover:border-gray-600'
                         }`}
                       >
-                        <img src={imgData.src} alt={`Image ${idx + 1}`} className="w-full h-full object-cover" />
+                        <img src={img} alt={`${selectedProduct.title} ${idx + 1}`} className="w-full h-full object-cover" />
                       </motion.button>
                     ))}
                   </div>
@@ -554,7 +553,6 @@ const Gallery = () => {
                       e.stopPropagation()
                       setSelectedProduct(null)
                       setCurrentImageIndex(0)
-                      setCurrentAllImageIndex(0)
                     }}
                     className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-accent to-accent/80 text-white rounded-xl font-bold hover:shadow-2xl transition-all duration-300 shadow-lg"
                   >
@@ -566,7 +564,7 @@ const Gallery = () => {
 
             {/* Keyboard Hint */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 text-sm bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full">
-              {allImages.length > 1 
+              {selectedProduct.images && selectedProduct.images.length > 1 
                 ? 'Use arrow keys to navigate, ESC to close' 
                 : 'ESC to close'}
             </div>
