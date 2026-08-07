@@ -486,11 +486,11 @@ const Gallery = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="max-w-6xl w-full"
+              className="max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 md:p-10 text-center shadow-2xl border border-gray-700">
-                <div className="aspect-square max-h-[75vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden shadow-inner">
+                <div className="aspect-square max-h-[55vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden shadow-inner">
                   {selectedProduct.images && selectedProduct.images.length > 0 && (
                     <motion.img 
                       initial={{ opacity: 0, scale: 0.95 }}

@@ -512,11 +512,11 @@ const Products = () => {
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
-              className="max-w-5xl w-full"
+              className="max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="bg-gray-900 rounded-2xl p-8 text-center">
-                <div className="aspect-square max-h-[70vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
+                <div className="aspect-square max-h-[55vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
                   <img 
                     src={selectedProduct.images[currentImageIndex]} 
                     alt={`${selectedProduct.name} ${currentImageIndex + 1}`} 
