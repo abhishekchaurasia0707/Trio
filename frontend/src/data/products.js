@@ -1,3 +1,4 @@
+// Updated with multiple images support for Gallery and Products page
 export const products = [
   {
     id: 'it-server-rack',
