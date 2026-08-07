@@ -29,7 +29,7 @@ const Contact = () => {
     setStatus(null)
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://trio-backend.onrender.com'
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
       await axios.post(`${apiUrl}/api/contact`, formData)
       setStatus('success')
       setFormData({
