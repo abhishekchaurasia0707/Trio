@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Filter, X, Search, Grid, List, Star, ArrowRight, CheckCircle, Package } from 'lucide-react'
+import { Filter, X, Search, Grid, List, Star, ArrowRight, CheckCircle, Package, ZoomIn, ChevronLeft, ChevronRight, X as CloseIcon } from 'lucide-react'
 import Section, { SectionHeader } from '../components/Section'
 import { ProductCard } from '../components/Card'
 import { products } from '../data/products'
@@ -13,6 +13,9 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState('grid')
   const [sortBy, setSortBy] = useState('name')
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
   useEffect(() => {
     const searchParam = searchParams.get('search')
@@ -62,6 +65,41 @@ const Products = () => {
   const clearSearch = () => {
     setSearchQuery('')
     setSearchParams({})
+  }
+
+  const handleViewGallery = (product, e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (product.images && product.images.length > 0) {
+      setSelectedProduct(product)
+      setCurrentImageIndex(0)
+      setIsLightboxOpen(true)
+    }
+  }
+
+  const navigateImageImages = (direction) => {
+    if (!selectedProduct || !selectedProduct.images) return
+    const images = selectedProduct.images
+    if (images.length === 0) return
+    
+    let newIndex
+    if (direction === 'next') {
+      newIndex = (currentImageIndex + 1) % images.length
+    } else {
+      newIndex = (currentImageIndex - 1 + images.length) % images.length
+    }
+    setCurrentImageIndex(newIndex)
+  }
+
+  const handleKeyDown = (e) => {
+    if (!isLightboxOpen) return
+    if (e.key === 'Escape') {
+      setIsLightboxOpen(false)
+      setSelectedProduct(null)
+      setCurrentImageIndex(0)
+    }
+    if (e.key === 'ArrowRight') navigateImageImages('next')
+    if (e.key === 'ArrowLeft') navigateImageImages('prev')
   }
 
   const ProductGridCard = ({ product, index = 0 }) => (
@@ -128,9 +166,20 @@ const Products = () => {
             {/* Footer */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               <span className="text-xs text-gray-500 capitalize">{product.category}</span>
-              <span className="text-primary font-semibold text-sm flex items-center group-hover:translate-x-1 transition-transform">
-                View Details <ArrowRight size={14} className="ml-1" />
-              </span>
+              <div className="flex items-center gap-2">
+                {product.images && product.images.length > 1 && (
+                  <button
+                    onClick={(e) => handleViewGallery(product, e)}
+                    className="text-xs text-accent font-medium flex items-center hover:text-accent/80 transition-colors"
+                  >
+                    <ZoomIn size={12} className="mr-1" />
+                    View Gallery
+                  </button>
+                )}
+                <span className="text-primary font-semibold text-sm flex items-center group-hover:translate-x-1 transition-transform">
+                  View Details <ArrowRight size={14} className="ml-1" />
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -179,9 +228,20 @@ const Products = () => {
               ))}
             </div>
 
-            <span className="text-primary font-semibold text-sm flex items-center">
-              View Details <ArrowRight size={14} className="ml-1" />
-            </span>
+            <div className="flex items-center gap-4">
+              {product.images && product.images.length > 1 && (
+                <button
+                  onClick={(e) => handleViewGallery(product, e)}
+                  className="text-xs text-accent font-medium flex items-center hover:text-accent/80 transition-colors"
+                >
+                  <ZoomIn size={12} className="mr-1" />
+                  View Gallery ({product.images.length})
+                </button>
+              )}
+              <span className="text-primary font-semibold text-sm flex items-center">
+                View Details <ArrowRight size={14} className="ml-1" />
+              </span>
+            </div>
           </div>
         </div>
       </Link>
@@ -397,6 +457,130 @@ const Products = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {isLightboxOpen && selectedProduct && selectedProduct.images && selectedProduct.images.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+            onClick={() => {
+              setIsLightboxOpen(false)
+              setSelectedProduct(null)
+              setCurrentImageIndex(0)
+            }}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-2"
+              aria-label="Close"
+            >
+              <CloseIcon size={28} />
+            </button>
+
+            {/* Navigation */}
+            {selectedProduct.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImageImages('prev')
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImageImages('next')
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-accent transition-colors z-10 bg-black/50 rounded-full p-3"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </>
+            )}
+
+            {/* Image Content */}
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="max-w-5xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gray-900 rounded-2xl p-8 text-center">
+                <div className="aspect-square max-h-[70vh] bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
+                  <img 
+                    src={selectedProduct.images[currentImageIndex]} 
+                    alt={`${selectedProduct.name} ${currentImageIndex + 1}`} 
+                    className="max-w-full max-h-full object-contain" 
+                  />
+                </div>
+                <h3 className="font-heading font-semibold text-2xl text-white mb-2">
+                  {selectedProduct.name}
+                </h3>
+                <p className="text-gray-400 mb-4">{selectedProduct.description}</p>
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <span className="px-3 py-1 bg-primary/30 text-primary-300 rounded-full text-sm capitalize">
+                    {selectedProduct.category}
+                  </span>
+                  {selectedProduct.images.length > 1 && (
+                    <div className="text-gray-500 text-sm">
+                      {currentImageIndex + 1} / {selectedProduct.images.length}
+                    </div>
+                  )}
+                </div>
+                {/* Image Thumbnails */}
+                {selectedProduct.images.length > 1 && (
+                  <div className="flex justify-center gap-2 mb-4">
+                    {selectedProduct.images.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCurrentImageIndex(idx)
+                        }}
+                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                          currentImageIndex === idx ? 'border-accent' : 'border-transparent hover:border-gray-600'
+                        }`}
+                      >
+                        <img src={img} alt={`${selectedProduct.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {/* View Product Details Button */}
+                <Link
+                  to={`/products/${selectedProduct.id}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsLightboxOpen(false)
+                    setSelectedProduct(null)
+                    setCurrentImageIndex(0)
+                  }}
+                  className="inline-flex items-center px-6 py-3 bg-accent text-white rounded-lg font-semibold hover:bg-accent/90 transition-colors"
+                >
+                  View Product Details <ArrowRight size={20} className="ml-2" />
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* Keyboard Hint */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
+              {selectedProduct.images.length > 1 
+                ? 'Use arrow keys to navigate, ESC to close' 
+                : 'ESC to close'}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
