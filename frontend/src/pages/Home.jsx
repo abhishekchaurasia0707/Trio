@@ -36,30 +36,40 @@ const Home = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-24 md:pt-32 bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-24 md:pt-32 bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 overflow-hidden">
         {/* Animated Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
         </div>
 
-        {/* Gradient Orbs */}
+        {/* Enhanced Gradient Orbs */}
         <motion.div
           animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+            rotate: [0, 90, 0]
           }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-20 right-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl"
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute top-10 right-10 w-[500px] h-[500px] bg-gradient-to-br from-accent/30 via-accent/20 to-primary/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2]
+            scale: [1.3, 1, 1.3],
+            opacity: [0.15, 0.35, 0.15],
+            rotate: [90, 0, 90]
           }}
-          transition={{ duration: 10, repeat: Infinity, delay: 2 }}
-          className="absolute bottom-20 left-20 w-80 h-80 bg-slate-700/30 rounded-full blur-3xl"
+          transition={{ duration: 12, repeat: Infinity, delay: 2 }}
+          className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-gradient-to-br from-primary/20 via-slate-600/30 to-accent/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, delay: 4 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-slate-700/20 via-gray-600/20 to-slate-800/20 rounded-full blur-3xl"
         />
 
         <div className="container-custom relative z-10">
@@ -74,29 +84,39 @@ const Home = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6"
+                whileHover={{ scale: 1.05 }}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-8 shadow-xl cursor-pointer"
               >
-                <Shield size={16} className="text-accent" />
-                <span className="text-white text-sm font-medium">ISO 9001:2015 Certified</span>
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                >
+                  <Shield size={18} className="text-accent" />
+                </motion.div>
+                <span className="text-white text-sm font-semibold">ISO 9001:2015 Certified</span>
               </motion.div>
 
-              <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white mb-6 leading-tight">
+              <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-6 leading-tight">
                 Powering Modern{' '}
-                <span className="text-accent">IT Infrastructure</span>
+                <span className="text-gradient-accent">IT Infrastructure</span>
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 leading-relaxed">
                 Premium Manufacturer of IT Server Racks, Network Cabinets, PDUs & Rack Accessories.
-                <span className="block text-gray-400 mt-2">Trusted by 1000+ enterprises across India.</span>
+                <span className="block text-gray-400 mt-3 text-base md:text-lg">Trusted by 1000+ enterprises across India since 2009.</span>
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link to="/products" className="btn-accent text-center flex items-center justify-center gap-2 group">
-                  Explore Products
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link to="/contact" className="btn-secondary text-center">
-                  Request Quote
-                </Link>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/products" className="btn-accent text-center flex items-center justify-center gap-2 group">
+                    Explore Products
+                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link to="/contact" className="btn-secondary text-center">
+                    Request Quote
+                  </Link>
+                </motion.div>
               </div>
 
               {/* Stats */}
@@ -112,13 +132,19 @@ const Home = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 md:p-4 text-center hover:bg-white/10 transition-colors"
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-4 md:p-5 text-center hover:from-accent/20 hover:to-accent/10 hover:border-accent/30 transition-all duration-300 shadow-xl"
                   >
-                    <stat.icon size={20} className="text-accent mx-auto mb-2" />
-                    <div className="text-xl md:text-3xl font-bold text-white mb-1">
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: index * 2 }}
+                    >
+                      <stat.icon size={22} className="text-accent mx-auto mb-2" />
+                    </motion.div>
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">
                       <AnimatedCounter end={stat.value} />
                     </div>
-                    <div className="text-gray-400 text-[10px] md:text-xs">{stat.label}</div>
+                    <div className="text-gray-300 text-xs md:text-sm font-medium">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -133,13 +159,13 @@ const Home = () => {
               <div className="relative w-full aspect-square max-w-lg mx-auto">
                 {/* Main Card */}
                 <motion.div
-                  animate={{ rotate: [-2, 2, -2] }}
-                  transition={{ duration: 6, repeat: Infinity }}
-                  className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/20 rounded-3xl backdrop-blur-sm border border-white/20"
+                  animate={{ rotate: [-3, 3, -3] }}
+                  transition={{ duration: 8, repeat: Infinity }}
+                  className="absolute inset-0 bg-gradient-to-br from-primary/50 to-accent/30 rounded-3xl backdrop-blur-sm border border-white/30 shadow-2xl"
                 />
                 
                 {/* Inner Card */}
-                <div className="absolute inset-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 overflow-hidden">
+                <div className="absolute inset-4 bg-gradient-to-br from-gray-800 to-slate-900 rounded-2xl border border-gray-700 overflow-hidden shadow-inner">
                   {/* Server Rack Visual */}
                   <div className="p-8">
                     <div className="grid grid-cols-3 gap-3 mb-6">
@@ -149,37 +175,25 @@ const Home = () => {
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.8 + i * 0.1 }}
-                          className="aspect-square bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg border border-gray-600 flex items-center justify-center"
+                          whileHover={{ scale: 1.1 }}
+                          className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-3 border border-gray-600 hover:border-accent/50 transition-all duration-300 cursor-pointer"
                         >
-                          <Server size={20} className="text-primary/50" />
+                          <div className="w-full aspect-square bg-gradient-to-br from-primary/30 to-accent/20 rounded flex items-center justify-center">
+                            <Server size={20} className="text-accent" />
+                          </div>
                         </motion.div>
                       ))}
                     </div>
-                    
-                    <div className="text-center">
-                      <div className="text-6xl mb-3">🖥️</div>
-                      <h3 className="text-white font-heading font-semibold text-lg mb-2">
-                        Enterprise Server Racks
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        42U • Heavy Duty • Lockable Doors
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Bottom Stats */}
-                  <div className="bg-black/30 border-t border-gray-700 p-4 grid grid-cols-3 gap-2">
-                    <div className="text-center">
-                      <div className="text-accent font-bold">2000kg</div>
-                      <div className="text-gray-500 text-xs">Load Capacity</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-accent font-bold">ISO</div>
-                      <div className="text-gray-500 text-xs">Certified</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-accent font-bold">5yr</div>
-                      <div className="text-gray-500 text-xs">Warranty</div>
+                    <div className="space-y-2">
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ width: 0 }}
+                          animate={{ width: '100%' }}
+                          transition={{ delay: 1.2 + i * 0.2 }}
+                          className="h-2 bg-gradient-to-r from-primary/50 to-accent/50 rounded-full"
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>

@@ -5,6 +5,17 @@ import { MapPin, Phone, Mail, Clock, Send, Loader2, CheckCircle, XCircle } from 
 import axios from 'axios'
 import Section, { SectionHeader } from '../components/Section'
 
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT
+const DEFAULT_FORMSPREE_ID = 'xnnavvqj'
+
+const getFormspreeUrl = () => {
+  if (FORMSPREE_ENDPOINT && FORMSPREE_ENDPOINT.length > 0) {
+    if (FORMSPREE_ENDPOINT.startsWith('http')) return FORMSPREE_ENDPOINT
+    return `https://formspree.io/f/${FORMSPREE_ENDPOINT}`
+  }
+  return `https://formspree.io/f/${DEFAULT_FORMSPREE_ID}`
+}
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +25,8 @@ const Contact = () => {
     message: ''
   })
   const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState(null) // 'success' | 'error' | null
+  const [status, setStatus] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
     setFormData({
@@ -27,10 +39,29 @@ const Contact = () => {
     e.preventDefault()
     setLoading(true)
     setStatus(null)
+    setErrorMessage('')
+
+    const formspreeUrl = getFormspreeUrl()
+    const payload = new FormData()
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'company' && (!value || value.trim() === '')) {
+        payload.append(key, 'Not provided')
+      } else {
+        payload.append(key, value)
+      }
+    })
+    payload.append('_subject', `New Contact Form Submission from ${formData.name}`)
+    payload.append('_replyto', formData.email)
+    payload.append('_cc', '')
+    payload.append('_template', 'table')
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-      await axios.post(`${apiUrl}/api/contact`, formData)
+      await axios.post(formspreeUrl, payload, {
+        headers: {
+          'Accept': 'application/json'
+        },
+        timeout: 15000
+      })
       setStatus('success')
       setFormData({
         name: '',
@@ -40,8 +71,20 @@ const Contact = () => {
         message: ''
       })
     } catch (error) {
-      console.error('Error submitting form:', error)
+      console.error('Error submitting form to Formspree:', error)
       setStatus('error')
+      if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+        const msg = error.response.data.errors.map(e => e.message).join(', ')
+        setErrorMessage(msg)
+      } else if (error.response?.data?.error) {
+        setErrorMessage(error.response.data.error)
+      } else if (error.code === 'ERR_NETWORK') {
+        setErrorMessage('Network error. Please check your connection and try again.')
+      } else if (error.code === 'ECONNABORTED') {
+        setErrorMessage('Request timed out. Please try again.')
+      } else {
+        setErrorMessage(error.message || 'Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -54,7 +97,6 @@ const Contact = () => {
         <meta name="description" content="Get in touch with Trio Power Technologies for IT infrastructure solutions. Request a quote or contact our team." />
       </Helmet>
 
-      {/* Hero */}
       <section className="bg-gradient-to-br from-slate-800 to-slate-900 pt-32 pb-20 md:pt-40 md:pb-32">
         <div className="container-custom">
           <motion.div
@@ -72,10 +114,8 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
       <Section>
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -135,7 +175,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Map Placeholder */}
             <div className="bg-gray-100 rounded-xl h-64 flex items-center justify-center">
               <div className="text-center">
                 <MapPin size={48} className="text-gray-400 mx-auto mb-2" />
@@ -145,7 +184,6 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -169,10 +207,17 @@ const Contact = () => {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center"
+                  className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
                 >
-                  <XCircle size={20} className="text-red-600 mr-2" />
-                  <span className="text-red-700">Failed to send message. Please try again.</span>
+                  <div className="flex items-start">
+                    <XCircle size={20} className="text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-red-700 font-medium">Failed to send message.</p>
+                      {errorMessage && (
+                        <p className="text-red-600 text-sm mt-1">{errorMessage}</p>
+                      )}
+                    </div>
+                  </div>
                 </motion.div>
               )}
 

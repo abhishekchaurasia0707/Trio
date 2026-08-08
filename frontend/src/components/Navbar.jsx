@@ -25,19 +25,22 @@ const Navbar = ({ scrolled }) => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-xl border-b border-gray-100' : 'bg-white border-b border-gray-100 shadow-sm'
+        scrolled ? 'bg-white/90 backdrop-blur-xl shadow-2xl border-b border-gray-100/50' : 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-lg'
       }`}
     >
       <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-300 rounded-xl flex items-center justify-center shadow-lg">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <motion.div 
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              className="w-12 h-12 bg-gradient-to-br from-primary via-primary-500 to-accent rounded-xl flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300"
+            >
               <span className="text-white font-bold text-2xl">T</span>
-            </div>
+            </motion.div>
             <div className="text-primary">
-              <span className="font-heading font-bold text-2xl tracking-tight">Trio Power</span>
-              <span className="block text-xs font-medium text-gray-500 mt-0.5">Technologies</span>
+              <span className="font-heading font-bold text-2xl tracking-tight group-hover:text-gradient transition-all duration-300">Trio Power</span>
+              <span className="block text-xs font-medium text-gray-500 mt-0.5 group-hover:text-accent transition-all duration-300">Technologies</span>
             </div>
           </Link>
 
@@ -47,14 +50,14 @@ const Navbar = ({ scrolled }) => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
+                className={`relative px-5 py-2.5 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 ${
                   location.pathname === link.path
                     ? link.featured 
-                      ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
-                      : 'bg-primary/10 text-primary'
+                      ? 'bg-gradient-to-r from-accent to-accent/90 text-white shadow-lg shadow-accent/40 scale-105'
+                      : 'bg-gradient-to-r from-primary/10 to-primary/5 text-primary shadow-md'
                     : link.featured
-                      ? 'text-accent hover:bg-accent/10'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-primary'
+                      ? 'text-accent hover:bg-gradient-to-r hover:from-accent/10 hover:to-accent/5'
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-50 hover:text-primary'
                 }`}
               >
                 {link.icon && <link.icon size={16} />}
@@ -75,7 +78,7 @@ const Navbar = ({ scrolled }) => {
             <div className="flex items-center space-x-3 ml-6 pl-6 border-l border-gray-200">
               <a
                 href="tel:+912012345678"
-                className="flex items-center space-x-2 text-gray-600 hover:text-primary transition-all duration-200 text-sm font-medium"
+                className="flex items-center space-x-2 text-gray-600 hover:text-primary transition-all duration-200 text-sm font-medium hover:scale-105"
               >
                 <Phone size={18} />
                 <span className="hidden xl:inline">Call Now</span>
