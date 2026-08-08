@@ -36,7 +36,7 @@ export default {
           950: '#042F2E',
         },
         accent: {
-          DEFAULT: '#E11D48', // Professional rose/light red
+          DEFAULT: '#FB7185', // Lighter rose/pink
           50: '#FFF1F2',
           100: '#FFE4E6',
           200: '#FECDD3',
